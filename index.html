@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b1217">
+  <meta name="description" content="Seven nine-agent coding teams, one Passepartout Lite benchmark, lots of tests, and one extremely confused XFCE tray-icon QA agent.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Nine agents. Seven teams. One very human problem.">
+  <meta property="og:description" content="What seven AI coding-team experiments taught me about coordination, code, and an XFCE logout menu.">
+  <!-- Change to the full HTTPS GitHub Pages URL after publication for reliable LinkedIn previews. -->
+  <meta property="og:image" content="assets/og-cover.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Nine agents. Seven teams. One very human problem. — passepartout experiments</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#article">Skip to article</a>
+  <header class="site-header">
+    <a class="wordmark" href="#top"><span class="wordmark-mark" aria-hidden="true">p.</span> passepartout <span class="wordmark-suffix">/ field notes</span></a>
+    <nav aria-label="Primary navigation" class="main-nav">
+      <a href="#setup">Setup</a><a href="#runs">The runs</a><a href="#screenshots">Screenshots</a><a href="#question">The question</a>
+    </nav>
+    <span class="header-note">October 2026 <span class="live-dot" aria-hidden="true"></span></span>
+  </header>
+
+  <main id="top">
+    <section class="hero shell" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-bar"></span> Experiment log <span class="eyebrow-divider">/</span> 01</p>
+        <h1 id="hero-title">Nine agents.<br>Seven teams.<br><em>One very human problem.</em></h1>
+        <p class="hero-dek">I asked nine AI coding agents to build the same little desktop app. Seven times. Somewhere between 286 passing tests and a QA agent clicking the XFCE logout menu, I started questioning the team structure itself.</p>
+        <div class="hero-actions"><a class="button-primary" href="#article">Read the story <span aria-hidden="true">↘</span></a><a class="button-link" href="#runs">Jump to the numbers <span aria-hidden="true">↓</span></a></div>
+        <div class="byline"><span class="byline-avatar">SC</span><span>Engineering experiments, not a benchmark leaderboard.<br><span class="byline-muted">Independent side project · October 2026</span></span></div>
+      </div>
+      <div class="hero-visual" aria-label="Screenshot from a Passepartout Lite experiment">
+        <div class="hero-glow"></div>
+        <div class="hero-frame">
+          <img src="assets/deepseek-high-muse.webp" alt="Original desktop screenshot from the DeepSeek High and Muse experiment, including its XFCE window decorations" width="1094" height="799" fetchpriority="high">
+        </div>
+        <p class="visual-caption"><span>07 runs · 09 agents</span> &nbsp;·&nbsp; DeepSeek High + Muse (my favourite UI)</p>
+      </div>
+    </section>
+
+    <div class="shell hero-rule" aria-hidden="true"><span>BUILD → TEST → SOMETIMES PANIC → REPEAT</span><span>↓</span></div>
+
+    <article id="article">
+      <section class="prose-shell intro-section" id="setup" aria-labelledby="setup-title">
+        <div class="section-kicker"><span class="section-number">01 /</span> The setup</div>
+        <h2 id="setup-title">I gave the agents familiar job titles. <span class="muted-heading">What could go wrong?</span></h2>
+        <p>I’ve been playing with multi-agent development while building <strong>passepartout</strong>, my personal AI desktop assistant. It has a standalone Rust/Axum server, a Tauri/React desktop client, multiple model providers, tools, streaming conversations, memory, and all the usual bells and whistles.</p>
+        <p>For the experiment I cut it down to <strong>Passepartout Lite</strong>: a smaller, repeatable development assignment. I used <strong>OpenCode</strong> to coordinate nine agent roles and swapped the model combinations between runs.</p>
+        <p>Not nine different ideas for an app. The same assignment, with the same basic team structure. The hope was to see what changed when the models did.</p>
+
+<div class="roles-box" aria-label="Nine agent roles grouped by responsibility">
+  <div class="roles-heading"><span>MEET THE NINE AGENTS</span><span class="roles-caption">Except nobody needed a coffee break.</span></div>
+  <div class="team-lanes">
+    <section class="team-lane" aria-labelledby="direction-title">
+      <div class="lane-header"><span class="lane-tag">GROUP 01</span><span class="lane-model">Model A</span></div>
+      <h3 id="direction-title">Direction &amp; review <span>5 roles</span></h3>
+      <p>Planning, design decisions, quality checks, and criticism.</p>
+      <ul>
+        <li><span class="lane-role-index">01</span>Team Lead</li>
+        <li><span class="lane-role-index">02</span>Critic</li>
+        <li><span class="lane-role-index">03</span>UX / CSS Engineer</li>
+        <li><span class="lane-role-index">04</span>Security Engineer</li>
+        <li><span class="lane-role-index">05</span>Reviewer</li>
+      </ul>
+    </section>
+    <section class="team-lane" aria-labelledby="delivery-title">
+      <div class="lane-header"><span class="lane-tag">GROUP 02</span><span class="lane-model">Model B</span></div>
+      <h3 id="delivery-title">Build &amp; verification <span>4 roles</span></h3>
+      <p>Writing the application, connecting its parts, and testing it.</p>
+      <ul>
+        <li><span class="lane-role-index">06</span>Rust Developer</li>
+        <li><span class="lane-role-index">07</span>React Developer</li>
+        <li><span class="lane-role-index">08</span>Integration Engineer</li>
+        <li><span class="lane-role-index">09</span>QA Engineer</li>
+      </ul>
+    </section>
+  </div>
+  <p class="tiny-note">For mixed-model runs, Model A took the five direction/review roles and Model B took the four build/verification roles. For the MiniMax-only run, both groups used MiniMax, with different <em>requested</em> reasoning settings (not independently verified).</p>
+</div>
+
+        <div class="prompt-panel" id="original-prompt">
+          <div class="prompt-panel-head"><span class="tiny-label">THE BRIEF / READ THE RECEIPTS</span><span class="prompt-file-name">original-prompt.md</span></div>
+          <details class="prompt-disclosure">
+            <summary>
+              <span class="prompt-summary-text"><strong>What did I actually ask them to build?</strong><small>The complete original assignment · 461 lines · expandable</small></span>
+              <span class="prompt-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="prompt-open-content">
+              <p>This is the original Passepartout Lite build brief, reproduced verbatim. Agent roles, model choices, reasoning settings and tool configuration were managed separately. <a href="prompts/passepartout-lite-initial-prompt.md" download>Download the Markdown ↗</a></p>
+              <pre tabindex="0" aria-label="Full original benchmark prompt"><code># Passepartout Lite — Build a Complete AI Desktop Assistant
+
+Build Passepartout Lite from scratch in this empty repository. Do not inspect, reuse, or modify files outside this repository.
+
+## Objective
+
+Create a functional, polished, lightweight personal AI assistant called **Passepartout Lite**.
+
+Passepartout Lite is a desktop application with an independently running backend server. It provides persistent conversations with LLMs, streaming responses, configurable providers, a simple long-term memory system, and an editable assistant personality.
+
+The goal is a usable application, not a demonstration, mockup, or collection of scaffolding.
+
+Implement the complete application, including backend, frontend, persistence, provider integrations, documentation, and tests.
+
+Make reasonable technical decisions independently.
+
+## 1. Architecture
+
+Use the following stack.
+
+### Backend
+
+- Rust
+- Tokio
+- Axum
+- SQLite
+- Versioned REST API
+- Server-Sent Events (SSE) for streaming
+
+The server must be a standalone executable.
+
+It must run independently of the desktop application and remain operational when all desktop windows are closed.
+
+Bind to localhost by default.
+
+The server is responsible for inference requests, conversation persistence, memory, configuration, generation state, and provider credentials.
+
+### Desktop
+
+- Tauri 2
+- React
+- TypeScript
+- HTML/CSS
+
+The desktop is a thin client that communicates with the backend through REST and SSE.
+
+Keep the server and desktop clearly separated.
+
+The design should allow additional client applications to be developed later without rewriting backend functionality.
+
+Do not implement mobile clients now.
+
+## 2. Desktop application behavior
+
+Passepartout Lite is a tray-first application.
+
+There is no main dashboard or manager window.
+
+The native system tray menu should provide:
+
+- New Chat
+- History
+- Settings
+- Quit
+
+### Chat windows
+
+Each conversation opens in its own native desktop window.
+
+The user must be able to:
+
+- Create a conversation.
+- Send messages.
+- Receive streaming responses.
+- Scroll through conversation history.
+- Rename a conversation.
+- Select an LLM provider and model.
+- Change models during an existing conversation.
+- Stop an active generation.
+- Retry a failed or interrupted response.
+- Copy assistant responses.
+- View Markdown and formatted code blocks.
+
+Multiple conversations may be open simultaneously in separate windows.
+
+Closing a chat window must not terminate the application or the backend server.
+
+### History
+
+Provide a History window showing previous conversations.
+
+The user should be able to search or browse conversations, reopen them, rename them, and delete them.
+
+Conversation history must survive application restarts.
+
+### Settings
+
+Provide an independent Settings window with sections for:
+
+- Providers and models
+- Assistant personality
+- Memory
+- Appearance
+- Server connection
+
+Settings must persist appropriately.
+
+## 3. LLM providers
+
+Support three provider types.
+
+### Ollama
+
+Connect to a local Ollama instance.
+
+Support:
+
+- Configurable endpoint.
+- Available models.
+- Streaming responses.
+- Model selection.
+- Meaningful connection and error states.
+
+### OpenRouter
+
+Support OpenRouter's API.
+
+Allow users to configure the provider and select an OpenRouter model.
+
+Stream responses as they arrive rather than waiting for the complete answer.
+
+### OpenAI-compatible providers
+
+Support arbitrary OpenAI-compatible endpoints.
+
+Allow configuration of:
+
+- Base URL.
+- API credentials, where required.
+- Model identifier.
+
+Handle provider-specific errors gracefully.
+
+### Provider architecture
+
+Keep provider implementations modular.
+
+The chat system should use a common interface so additional providers can be implemented without rewriting conversation logic.
+
+Provider credentials must be handled securely and never exposed unnecessarily to the desktop application or returned in ordinary API responses.
+
+Support environment-based credential configuration and use secure operating-system facilities where appropriate.
+
+## 4. Conversation persistence
+
+Use SQLite to persist:
+
+- Conversations.
+- Messages.
+- Message roles.
+- Selected providers and models.
+- Generation status.
+- Timestamps.
+- Application settings.
+- Personality configuration.
+- Long-term memories.
+
+Use migrations rather than requiring a fresh database after changes.
+
+Ensure database access works correctly with concurrent asynchronous server operations.
+
+## 5. Streaming and generation lifecycle
+
+This is an important architectural requirement.
+
+Inference runs on the server, not in a desktop window.
+
+A generation must continue even if the user closes the corresponding chat window or temporarily disconnects.
+
+Implement:
+
+- Incremental token streaming through SSE.
+- Generation identifiers.
+- Running, completed, failed, cancelled and interrupted states.
+- Cancellation through an explicit server API.
+- Error handling.
+- Retry functionality.
+- Client reconnection.
+- Conversation state recovery after reconnecting.
+- Restart handling for unfinished generations.
+
+When the desktop reconnects, it must recover the current conversation state without duplicating messages.
+
+Persist completed responses.
+
+Keep the generation lifecycle separate from the network connection used to display its output.
+
+Avoid starting multiple conflicting generations within the same conversation.
+
+## 6. Assistant personality
+
+Passepartout should feel like a useful personal assistant rather than a generic chatbot.
+
+Its default personality should be:
+
+- Warm and conversational.
+- Intelligent and curious.
+- Practical and helpful.
+- Occasionally playful.
+- Honest about uncertainty.
+- Comfortable with technical conversations.
+- Concise when appropriate, detailed when necessary.
+
+Avoid robotic or excessively formal responses.
+
+Allow the user to edit the assistant's personality and instructions in Settings.
+
+Persist those instructions and include them in the context sent to the selected model.
+
+## 7. Simple long-term memory
+
+Implement a basic persistent memory system.
+
+The assistant should be able to remember explicit information supplied by the user.
+
+For example:
+
+"Remember that I prefer Emacs."
+
+The system should recognize explicit memory requests and persist useful information.
+
+Provide:
+
+- Memory creation.
+- Memory retrieval.
+- Memory search.
+- Memory editing.
+- Memory deletion.
+- Persistent storage across conversations.
+- Relevant memory inclusion in model context.
+
+SQLite is sufficient. FTS5 can be used for memory searching.
+
+Do not introduce GraphRAG, a graph database, or a complex autonomous memory architecture.
+
+Keep the system understandable and maintainable.
+
+## 8. User interface and visual design
+
+Create a professional, elegant desktop interface.
+
+The application should look like a real product, not a default developer tool or raw HTML prototype.
+
+Requirements:
+
+- Clean visual hierarchy.
+- Attractive typography.
+- Consistent spacing.
+- Thoughtful use of colors.
+- Light and dark themes.
+- System appearance preference.
+- Responsive layouts.
+- Comfortable conversation reading.
+- Attractive message composer.
+- Clear streaming and generation status.
+- Useful empty states.
+- Polished Settings and History windows.
+- Proper error messages and feedback.
+
+Use modern CSS styling.
+
+The application should feel calm, personal, and approachable.
+
+Do not sacrifice usability for visual decoration.
+
+The chat composer should remain usable while responses stream.
+
+Ensure long conversations scroll naturally and code blocks display correctly.
+
+## 9. API design
+
+Expose a versioned REST API under `/api/v1`.
+
+Include appropriate endpoints for:
+
+- Health and connectivity.
+- Conversations.
+- Messages.
+- Starting generation.
+- Streaming generation events.
+- Stopping generation.
+- Retrying generation.
+- Provider configuration.
+- Models.
+- Personality.
+- Memory.
+- Application settings.
+
+Use clear request and response structures.
+
+Document the API sufficiently for another developer to build a client.
+
+Keep credentials server-side.
+
+Use appropriate local API security, validation, and error handling.
+
+## 10. Implementation scope
+
+This is intentionally a simplified version of a larger personal-assistant concept.
+
+Do not implement:
+
+- Multiple autonomous agents.
+- Agent orchestration.
+- MCP integrations.
+- External tools or shell execution.
+- Google or email integrations.
+- GraphRAG.
+- Complex vector databases.
+- Mobile applications.
+- Remote deployment infrastructure.
+- User-account management.
+- Unrelated features.
+
+Focus on completing the core assistant properly.
+
+## 11. Tests and verification
+
+Implement meaningful tests for important backend functionality.
+
+At minimum, cover:
+
+- Database creation and migrations.
+- Conversation persistence.
+- Message persistence.
+- Settings persistence.
+- Memory operations.
+- Provider request handling.
+- Generation state transitions.
+- Streaming functionality.
+- Cancellation and error handling.
+
+Use mocked providers when external services or credentials are unavailable.
+
+Add frontend tests where useful.
+
+Verify the Rust workspace and frontend build.
+
+Where dependencies and environment permit, verify the Tauri application builds.
+
+Do not claim functionality was tested if only compilation was performed.
+
+## 12. Documentation
+
+Provide:
+
+### README.md
+
+Include:
+
+- Project overview.
+- Prerequisites.
+- Installation.
+- Server startup.
+- Desktop startup.
+- Ollama configuration.
+- OpenRouter configuration.
+- OpenAI-compatible provider configuration.
+- Environment variables.
+- Development commands.
+- Testing commands.
+
+### ARCHITECTURE.md
+
+Explain:
+
+- Overall architecture.
+- Rust server.
+- Tauri client.
+- Database.
+- Provider abstraction.
+- Streaming lifecycle.
+- Memory handling.
+- Server/client communication.
+
+### IMPLEMENTATION.md
+
+Summarize:
+
+- Implemented functionality.
+- Important technical decisions.
+- Verification performed.
+- Known limitations.
+- Remaining incomplete items.
+
+## 13. Working instructions
+
+You are responsible for implementing this project end to end.
+
+Begin by inspecting the current repository, then establish the Rust workspace and desktop application.
+
+Work incrementally, but continue implementing all required components.
+
+Do not stop after creating a plan, documentation, or backend skeleton.
+
+Do not stop after implementing only the server.
+
+Do not stop after generating a UI that is not connected to real application state.
+
+Build the actual application.
+
+Use Git to track meaningful implementation milestones.
+
+Run formatting, compilation, and tests throughout development.
+
+If a command fails, investigate and correct the underlying problem.
+
+Do not hide failures or claim unverified functionality works.
+
+Make reasonable decisions without repeatedly requesting approval.
+
+If an external API key, service, or graphical runtime is unavailable, use local mocks and continue implementing everything that can be verified independently.
+
+Avoid unnecessary dependencies and overengineering.
+
+## 14. Completion criteria
+
+The task is complete when:
+
+- The Rust server builds and starts.
+- The SQLite database persists conversations and settings.
+- The application supports real conversations through supported providers.
+- Responses stream to the client.
+- Generation can be cancelled.
+- Closing a client window does not terminate server-side generation.
+- Conversations can be reopened from History.
+- The native system tray provides access to the application.
+- Settings are functional.
+- Provider and model selection work.
+- Personality instructions can be edited.
+- Explicit memories can be stored and retrieved.
+- Light and dark themes work.
+- The frontend is polished and functional.
+- The server/client architecture is documented.
+- Tests and build commands have been run.
+- Known limitations are documented honestly.
+
+At the end, provide a concise implementation report covering:
+
+1. What was implemented.
+2. Architectural decisions.
+3. Repository structure.
+4. Tests and build results.
+5. What was actually verified.
+6. Remaining limitations.
+7. Git commit information.
+8. Commands required to run the application.
+
+**Build Passepartout Lite as a complete, independently runnable application.**
+
+Begin implementation now.
+</code></pre>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="wide-shell results-section" id="runs" aria-labelledby="runs-title">
+        <div class="section-heading">
+          <div><div class="section-kicker"><span class="section-number">02 /</span> The experiments</div><h2 id="runs-title">Seven runs. <span class="muted-heading">Not seven winners.</span></h2></div>
+          <p>They all tackled Passepartout Lite. They did <em>not</em> all run under perfectly identical conditions, and their test totals measure different coverage.</p>
+        </div>
+        <div class="metric-strip" aria-label="Key observations">
+          <div><span class="metric-overline">TOTAL TEAM RUNS</span><strong>07</strong><small>nine agents each</small></div>
+          <div><span class="metric-overline">FASTEST REPORTED RUN</span><strong>3h 34m</strong><small>MiniMax-only · Debian VM</small></div>
+          <div><span class="metric-overline">MOST REPORTED TESTS</span><strong>286</strong><small>Luna High + MiniMax</small></div>
+          <div><span class="metric-overline">PERSONAL UI FAVOURITE</span><strong class="text-metric">DeepSeek<br>+ Muse</strong><small>High + Default</small></div>
+        </div>
+        <div class="comparison-head"><h3>The scorecard</h3><span>Balance changes are <em>observations</em>, not audited invoices.</span></div>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Seven run comparison, horizontally scrollable on small screens">
+          <table class="scorecard">
+            <thead><tr><th scope="col">Model pair / reasoning</th><th scope="col">Time</th><th scope="col">OpenRouter Δ</th><th scope="col">Tests*</th><th scope="col">GUI / QA</th></tr></thead>
+            <tbody>
+              <tr><th scope="row"><span class="run-index">01</span> Luna High + Muse Default</th><td>4h 37m</td><td>$3.80</td><td>230</td><td><span class="status status-amber">Worked after fix</span></td></tr>
+              <tr><th scope="row"><span class="run-index">02</span> DeepSeek Max + Qwen High</th><td>8h 28m</td><td>$19.97</td><td>160</td><td><span class="status status-red">GUI QA incomplete</span></td></tr>
+              <tr><th scope="row"><span class="run-index">03</span> Luna Max + Muse Default</th><td>6h 55m</td><td>$5.68</td><td>254</td><td><span class="status status-green">Native QA GO</span></td></tr>
+              <tr class="highlight-row"><th scope="row"><span class="run-index">04</span> DeepSeek High + Muse Default <span class="favourite-chip">UI pick</span></th><td>~7h 15m</td><td>$3.95</td><td>164</td><td><span class="status status-green">QA passed</span></td></tr>
+              <tr><th scope="row"><span class="run-index">05</span> DeepSeek High + MiniMax Free</th><td>~3h 50m</td><td>$2.19†</td><td>197</td><td><span class="status status-green">Packaged + Ollama</span></td></tr>
+              <tr><th scope="row"><span class="run-index">06</span> Luna High + MiniMax Free</th><td>8h 04m</td><td>$1.19</td><td>286</td><td><span class="status status-amber">GUI QA, mock only</span></td></tr>
+              <tr><th scope="row"><span class="run-index">07</span> MiniMax Free (Max/default requested)</th><td>3h 34m</td><td>$0</td><td>192</td><td><span class="status status-green">VM native QA</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="model-key"><strong>Model names:</strong> Luna = GPT-6 Luna · Muse = Muse Spark 1.3 Contributor · DeepSeek = DeepSeek V4.1 Flash 1017 · Qwen = Qwen3.7 Flash · MiniMax = MiniMax M3.1 Flash <code>:free</code>. High / Max / Default refer to requested reasoning settings, not equivalent levels of computation across providers.</p>
+        <p class="table-footnote">* Passing automated tests as reported by each team; counts are not normalized by coverage. † DeepSeek + MiniMax reported $1.15 in OpenCode but its balance changed $2.19; reason unresolved. ‡ MiniMax-only reported $0 inference cost, but no closing balance was supplied. The last run was on a Debian VM, while earlier runs used a different environment.</p>
+        <div class="visual-metric" aria-labelledby="metric-title">
+          <div class="visual-metric-head"><div><p class="tiny-label">A different angle</p><h3 id="metric-title">Same assignment, very different trade-offs.</h3></div><div class="metric-switch" role="group" aria-label="Compare by metric"><button type="button" class="is-active" data-metric="time" aria-pressed="true">Elapsed time</button><button type="button" data-metric="cost" aria-pressed="false">Balance change</button><button type="button" data-metric="tests" aria-pressed="false">Reported tests</button></div></div>
+          <div id="bar-chart" class="bar-chart" aria-live="polite">
+            <p class="chart-fallback">Enable JavaScript to see the interactive chart. The full figures are in the table above.</p>
+          </div>
+          <p id="chart-caveat" class="chart-caveat">Times include agent coordination and environmental effects—not just model inference speed.</p>
+        </div>
+      </section>
+
+      <section class="prose-shell story-section" aria-labelledby="surprise-title">
+        <div class="section-kicker"><span class="section-number">03 /</span> The part I didn't expect</div>
+        <h2 id="surprise-title">The tests passed.<br><span class="muted-heading">The desktop had other ideas.</span></h2>
+        <p>The DeepSeek Max + Qwen High team reported <strong>160 passing tests</strong> and produced a noticeably more polished interface than my first Luna High + Muse run. It also consumed far more time and credits.</p>
+        <p>But the real application still needed manual Vite/Tauri port and Content Security Policy corrections, and I never completed an independent end-to-end GUI verification for that run. Green tests and a good-looking screenshot weren't quite the same thing as a release.</p>
+        <div class="anecdote"><span class="anecdote-icon" aria-hidden="true">↗</span><div><p class="anecdote-label">Meanwhile, in QA...</p><p>While the QA agent was testing the Passepartout tray icon on my XFCE desktop, it repeatedly clicked the <strong>exit/logout menu</strong> instead of the application icon. :D</p><p class="anecdote-end">Nine roles, plenty of code, and apparently one very tempting logout button.</p></div></div>
+        <p>The other runs were interesting in different ways. Luna Max + Muse made it through native QA with a polished UI. DeepSeek High + Muse produced my favourite visual design. DeepSeek High + MiniMax was quick, built Linux packages, and actually exercised a local Ollama response. MiniMax-only was the fastest reported run at $0 reported inference cost, with independent QA finding four defects and checking the fixes—but its real providers weren't exercised.</p>
+        <p>More code, more tests, better UI, a cheaper run: none of these are quite the same thing as a better delivered application.</p>
+      </section>
+
+      <section class="wide-shell screenshots-section" id="screenshots" aria-labelledby="shots-title">
+        <div class="section-heading gallery-heading"><div><div class="section-kicker"><span class="section-number">04 /</span> Actual pixels</div><h2 id="shots-title">Same brief. <span class="muted-heading">Very different personalities.</span></h2></div><p>Original screenshots from the runs. Click to inspect; these are not redesigned mockups.</p></div>
+        <div class="featured-gallery">
+          <figure class="featured-shot"><button type="button" class="shot-button" data-full="assets/luna-high-muse.webp" data-caption="Luna High + Muse Default · 4h37m" aria-label="Enlarge Luna High Muse screenshot"><img src="assets/luna-high-muse.webp" alt="Original Luna High plus Muse interface, utilitarian form controls" width="1038" height="759" loading="lazy"><span class="zoom-label">↗ View full</span></button><figcaption><strong>01 / Luna High + Muse</strong><span>Functional. Less refined. Fast first pass.</span></figcaption></figure>
+          <figure class="featured-shot"><button type="button" class="shot-button" data-full="assets/deepseek-max-qwen.webp" data-caption="DeepSeek Max + Qwen High · 8h28m" aria-label="Enlarge DeepSeek Max Qwen screenshot"><img src="assets/deepseek-max-qwen.webp" alt="Original DeepSeek Max and Qwen High interface" width="974" height="799" loading="lazy"><span class="zoom-label">↗ View full</span></button><figcaption><strong>02 / DeepSeek Max + Qwen</strong><span>Prettier. Slower. Native integration uncertain.</span></figcaption></figure>
+          <figure class="featured-shot featured-pick"><div class="pick-ribbon">MY VISUAL PICK</div><button type="button" class="shot-button" data-full="assets/deepseek-high-muse.webp" data-caption="DeepSeek High + Muse Default · author’s favourite UI" aria-label="Enlarge DeepSeek High Muse screenshot"><img src="assets/deepseek-high-muse.webp" alt="Original DeepSeek High and Muse interface with quiet landing page" width="1094" height="799" loading="lazy"><span class="zoom-label">↗ View full</span></button><figcaption><strong>04 / DeepSeek High + Muse</strong><span>The one whose visual approach I liked most.</span></figcaption></figure>
+        </div>
+        <div class="gallery-more" id="gallery-more">
+          <figure><button type="button" class="shot-button" data-full="assets/luna-max-muse.webp" data-caption="Luna Max + Muse Default" aria-label="Enlarge Luna Max Muse screenshot"><img src="assets/luna-max-muse.webp" alt="Luna Max and Muse desktop app screenshot" width="994" height="799" loading="lazy"><span class="zoom-label">↗ View full</span></button><figcaption>03 / Luna Max + Muse</figcaption></figure>
+          <figure><button type="button" class="shot-button" data-full="assets/deepseek-high-minimax.webp" data-caption="DeepSeek High + MiniMax Free" aria-label="Enlarge DeepSeek High MiniMax screenshot"><img src="assets/deepseek-high-minimax.webp" alt="DeepSeek High and MiniMax desktop chat screenshot" width="974" height="759" loading="lazy"><span class="zoom-label">↗ View full</span></button><figcaption>05 / DeepSeek High + MiniMax</figcaption></figure>
+          <figure><button type="button" class="shot-button" data-full="assets/luna-high-minimax.webp" data-caption="Luna High + MiniMax Free" aria-label="Enlarge Luna High MiniMax screenshot"><img src="assets/luna-high-minimax.webp" alt="Luna High and MiniMax desktop chat screenshot" width="1114" height="819" loading="lazy"><span class="zoom-label">↗ View full</span></button><figcaption>06 / Luna High + MiniMax</figcaption></figure>
+          <figure><button type="button" class="shot-button" data-full="assets/minimax-only.webp" data-caption="MiniMax-only team · Debian VM" aria-label="Enlarge MiniMax only screenshot"><img src="assets/minimax-only.webp" alt="MiniMax-only team interface with chat and no model yet selected" width="994" height="759" loading="lazy"><span class="zoom-label">↗ View full</span></button><figcaption>07 / MiniMax-only team</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="prose-shell thesis-section" id="question" aria-labelledby="question-title">
+        <div class="section-kicker"><span class="section-number">05 /</span> The question I ended up with</div>
+        <h2 id="question-title">We copied the team structure.<br><span class="muted-heading">But why?</span></h2>
+        <p>Somewhere during these experiments I became more interested in the team structure than the models. We already know that nine human developers can complete their individual tasks without producing a working product. And here I was, recreating almost exactly the same organization with AI agents.</p>
+        <figure class="reaction-gif">
+          <img
+            src="assets/ryan-reynolds-but-why.gif"
+            alt="Ryan Reynolds — But why?"
+            loading="lazy"
+          />
+        </figure>
+        <p>Humans need specialized roles partly because of cognitive limitations, different expertise, and the simple fact that one person can't know or do everything.</p>
+        <p>AI agents have limitations too: context windows, reasoning abilities, tool access, imperfect shared state, and communication overhead. Those are real engineering constraints, but they aren't necessarily the same ones that led us to organize human teams around managers, reviewers, and specialists.</p>
+        <p>Still, we give agents job titles, bosses, and responsibilities that look suspiciously like our own. Maybe that is a perfectly sensible starting point. I'm just not sure it's the best destination.</p>
+        <p>I started out comparing models and coding workflows. Somehow I ended up questioning whether the way we organize software teams makes sense for AI in the first place.</p>
+        <p class="closing-line">We might be inventing a new way of building software.<br><strong>Or we might just be automating our old problems.</strong></p>
+        <figure class="reaction-gif">
+          <img
+            src="assets/ali-g-sacha-baron-cohen.gif"
+            alt="Ryan Reynolds — But why?"
+            loading="lazy"
+          />
+        </figure>
+      </section>
+
+      <aside class="wide-shell methodology" id="method-notes" aria-labelledby="notes-title">
+        <div><p class="tiny-label">THE FINE PRINT</p><h2 id="notes-title">Before anyone calls this science.</h2></div>
+        <div class="notes-grid"><p><strong>One specification, several environments.</strong> Several source archives share the original benchmark prompt hash; the last run used a Debian VM. Settings and host conditions weren't all controlled, and run times include orchestration and debugging.</p><p><strong>“High” is not a unit of measurement.</strong> Provider reasoning labels aren't comparable. Requested settings and model pins don't prove how a provider actually routed a call; the MiniMax-only Max/default split was not independently validated at runtime.</p><p><strong>Tests ≠ release quality.</strong> Test counts were reported by agents, with varying scope and skipped cases. Native smoke tests, real provider calls, and independent verification differed. Real-provider integration was not tested in every run.</p><p><strong>Costs are approximate.</strong> For six runs, the table shows changes observed in an OpenRouter balance, which might include delayed or other usage. The MiniMax-only team's $0 was its OpenCode report, with no ending balance reconciliation.</p></div>
+      </aside>
+    </article>
+  </main>
+
+  <footer class="site-footer wide-shell"><div><span class="footer-brand">passepartout<span class="footer-dot">.</span></span><p>One person's experiments with machines pretending to be a software team.</p></div><div class="footer-links"><a href="#top">Back to top ↑</a><a href="#method-notes">Methodology ↓</a></div><p class="footer-bottom">Written in October 2026 · Screenshots from actual experiment runs · Not a scientific ranking</p></footer>
+  <dialog id="lightbox" class="lightbox" aria-label="Screenshot viewer"><form method="dialog"><button type="submit" class="close-lightbox" aria-label="Close screenshot">×</button></form><img id="lightbox-img" alt="Enlarged experiment screenshot"><p id="lightbox-caption"></p></dialog>
+</body>
+</html>
